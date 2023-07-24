@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQLite Tablo Seç</title>
+</head>
+<body>
+    <h1>SQLite Tablo Seç</h1>
+    <p>Seçilen dosya: {{ filename }}</p>
+    <form action="/show_tables/{{ filename }}" method="post">
+        <select name="table" required>
+            <option value="" selected disabled>Tablo Seç</option>
+            {% for table in tables %}
+            <option value="{{ table[0] }}">{{ table[0] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Tabloyu Göster">
+    </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</body>
+</html>

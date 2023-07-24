@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQLite Tablo Listesi</title>
+</head>
+<body>
+    <h1>SQLite Tablo Listesi</h1>
+    <p>Seçilen dosya: {{ db_name }}</p>
+    <ul>
+        {% for table in tables %}
+        <li><a href="/show_table_contents/{{ table[0] }}">{{ table[0] }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

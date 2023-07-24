@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQLite Tablo İçeriği</title>
+</head>
+<body>
+    <h1>SQLite Tablo İçeriği</h1>
+    <p>Seçilen dosya: {{ filename }}</p>
+    <p>Seçilen tablo: {{ table_name }}</p>
+    <table>
+        <tr>
+            {% for column in column_names %}
+            <th>{{ column }}</th>
+            {% endfor %}
+            <th>İşlem</th>
+        </tr>
+        {% for row in table_contents %}
+        <tr>
+            {% for cell in row %}
+            <td>
+                {% if loop.index != 2 %}
+                {{ cell }}
+                {% else %}
+                <span id="taskText_{{ row[0] }}">{{ cell }}</span>
+                <form id="editForm_{{ row[0] }}" action="/edit/{{ filename }}/{{ table_name }}/{{ row[0] }}" method="post" style="display: none;">
+                    <input type="text" name="edited_task" value="{{ cell }}" required>
+                    <button type="submit">Kaydet</button>
+                </form>
+                {% endif %}
+            </td>
+            {% endfor %}
+            <td>
+                <a href="#" onclick="showEditForm({{ row[0] }})">Düzenle</a>
+                <a href="/delete/{{ filename }}/{{ table_name }}/{{ row[0] }}">Sil</a>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <form action="/show_table_contents/{{ filename }}/{{ table_name }}" method="post">
+                <td colspan="{{ column_names|length + 1 }}">
+                    <input type="text" name="new_task" placeholder="Ekle" required>
+                    <button type="submit">Ekle</button>
+                </td>
+            </form>
+        </tr>
+    </table>
+
+    <script>
+        function showEditForm(taskId) {
+            var editForm = document.getElementById('editForm_' + taskId);
+            var taskText = document.getElementById('taskText_' + taskId);
+            var editedTaskValue = taskText.innerText;
+
+            editForm.style.display = 'inline';
+            taskText.style.display = 'none';
+
+            // Düzenleme formuna metni aktar
+            editForm.elements['edited_task'].value = editedTaskValue;
+        }
+    </script>
+</body>
+</html>
